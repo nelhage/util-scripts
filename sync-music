@@ -1,0 +1,2 @@
+#!/bin/sh
+exec unison /home/nelhage/music/ ssh://nelhage.com//data/music/ "$@"
