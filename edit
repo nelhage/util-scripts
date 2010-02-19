@@ -1,0 +1,14 @@
+#!/bin/sh
+
+create=
+if [ -z "$EMACS" ] && [ -z "$EMACSCLIENT_NO_CREATE" ]; then
+    if [ -t 1 ]; then
+        create=-t
+    else
+        create=-c
+    fi
+fi
+
+alternate=vim
+
+emacsclient $create -a $alternate "$@"
