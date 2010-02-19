@@ -1,0 +1,38 @@
+#!/bin/sh
+export KRB5CCNAME=/tmp/krb5cc_$(id -u).root
+export KRBTKFILE=/tmp/tkt$(id -u).root
+
+case $1 in
+    init)
+        shift;
+        exec kinit -F -5 -l15m $USER/root@ATHENA.MIT.EDU "$@"
+        ;;
+    destroy)
+        exec kdestroy -45
+        ;;
+    shell)
+        klist -s || krbroot init || exit 1;
+        HOST="`hostname` (krbroot)" pagsh -c $SHELL
+        ;;
+    ssh)
+        klist -s || krbroot init || exit 1;
+        shift
+        exec ssh -k -l root "$@"
+        ;;
+    rlogin)
+        klist -s || krbroot init || exit 1;
+        exec rlogin -x -l root $2
+        ;;
+    *)
+        if [ $# = 0 ]; then
+            echo "Usage: $0 init" >&2
+            echo "       $0 destroy" >&2
+            echo "       $0 shell" >&2
+            echo "       $0 ssh [args]" >&2
+            echo "       $0 rlogin [args]" >&2
+            echo "       $0 [cmd]" >&2
+        else
+            exec "$@"
+        fi
+        ;;
+esac
