@@ -1,0 +1,5 @@
+#!/bin/sh
+cd ~/nelhage/org/
+git add -A
+git commit -m 'Update.'
+git push
