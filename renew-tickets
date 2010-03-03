@@ -1,3 +1,2 @@
 #!/bin/sh
-kinit -R && krb524init && aklog
-
+kinit -R && aklog
