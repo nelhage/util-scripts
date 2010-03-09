@@ -1,0 +1,89 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
+use Cwd;
+use Fatal qw(chdir);
+
+=head ABOUT
+
+The purpose of this script is to perform a generic "Figure out what
+you need to do to build the project in my cwd, and do it".
+
+The main thing I use it for is as my `compile-command' in emacs. That
+means that I can M-x compile virtually anywhere, and this script will
+execute and usually do the right thing.
+
+The algorithm it uses is quite simple. It has a list of build types,
+and for each type, a list of filenames for makefiles. It recursively
+walks up the directory tree until it finds a build file, and then
+keeps walking until it finds the outermost directory containing that
+one that contains a build file, and executes the build from there. The
+latter step is necessary to ensure that projects with recursive
+makefiles get built from the top-level.
+
+=cut
+
+my $langs = [
+    {
+        name    => "make",
+        files   => [qw(Makefile makefile GNUmakefile GNUMakefile)],
+        command => [qw(make)]
+    },
+    {
+        name    => "haskell",
+        files   => [qw(Setup.hs Setup.lhs)],
+        command => [qw(runhaskell %s)]
+    },
+    {
+        name    => "java",
+        files   => [qw(build.xml)],
+        command => [qw(ant -e)]
+    },
+    {
+        name    => "scons",
+        files   => [qw(SConstruct)],
+        command => [qw(scons -Q)]
+    }
+];
+
+my $dir = getcwd;
+my $lang = undef;
+my $file = undef;
+
+sub has_makefile {
+    my $dir = shift;
+    for my $l (@$langs) {
+        next if $lang && $l->{name} ne $lang->{name};
+        for my $f (@{$l->{files}}) {
+            if(-e "$dir/$f") {
+                $lang = $l;
+                $file = $f;
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+
+while($dir && !has_makefile($dir)) {
+    $dir =~ s{/[^/]+$}{};
+}
+
+die("No makefile found") unless $dir;
+
+my $prev_dir = $dir;
+
+while($dir  && has_makefile($dir)) {
+    $prev_dir = $dir;
+    $dir =~ s{/[^/]+$}{};
+}
+
+chdir($prev_dir);
+
+my @command = (@{$lang->{command}}, @ARGV);
+
+@command = map {$_ =~ s{\%s}{$file}; $_} @command;
+
+system(@command);
