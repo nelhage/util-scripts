@@ -1,2 +1,2 @@
 #!/bin/sh
-exec unison /home/nelhage/doc/ ssh://nelhage.com//data/doc/ "$@"
+exec unison -ui text /home/nelhage/doc/ ssh://nelhage.com//data/doc/ "$@"
