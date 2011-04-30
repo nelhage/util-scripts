@@ -5,7 +5,7 @@ export KRBTKFILE=/tmp/tkt$(id -u).root
 case $1 in
     init)
         shift;
-        exec kinit -F -5 -l15m $USER/root@ATHENA.MIT.EDU "$@"
+        exec kinit -F -5 -l15m -r15m $USER/root@ATHENA.MIT.EDU "$@"
         ;;
     destroy)
         exec kdestroy -45
