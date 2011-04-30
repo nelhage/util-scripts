@@ -1,0 +1,31 @@
+#!/usr/bin/env python
+import email.parser
+import tempfile
+import sys
+import os
+
+browser = 'google-chrome'
+
+def find_html_part(m):
+    for part in m.walk():
+        if part.get_content_type() == 'text/html':
+            return part
+
+    return None
+
+parser = email.parser.Parser()
+
+e = parser.parse(sys.stdin)
+
+html = find_html_part(e)
+
+if not html:
+    print >>sys.stderr,  "No HTML subpart detected!"
+    sys.exit(1)
+
+
+(fd, name) = tempfile.mkstemp(prefix='html-mail-')
+
+os.fdopen(fd, 'w').write(html.get_payload(decode=True))
+
+os.execlp(browser, browser, name)
