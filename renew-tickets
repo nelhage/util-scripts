@@ -1,2 +1,2 @@
 #!/bin/sh
-kinit -R && aklog
+kinit -R && test -d /afs/athena.mit.edu && aklog
