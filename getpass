@@ -1,0 +1,11 @@
+#!/bin/sh
+
+PWFILE=$HOME/Dropbox/sec/passwd.gpg
+
+what="$1"
+if ! [ "$what" ]; then
+    echo "Usage: $0 WHAT"
+    exit 1;
+fi
+
+gpg --decrypt "$PWFILE" | grep -Eie "$what"
