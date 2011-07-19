@@ -1,2 +1,2 @@
 #!/bin/sh
-mutt -F $HOME/.muttrc.nelhage
+exec mutt -F $HOME/.muttrc.nelhage

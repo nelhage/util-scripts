@@ -1,2 +1,2 @@
 #!/bin/sh
-mutt -F $HOME/.muttrc.ksplice
+exec mutt -F $HOME/.muttrc.ksplice
