@@ -1,0 +1,39 @@
+#!/usr/bin/env python
+import os
+import sys
+
+import urllib2
+import random
+import re
+
+from lxml import etree
+import zephyr
+
+URL = 'http://bash.org/?random1'
+CLS = 'message'
+INSTANCE = 'bash'
+
+x = etree.HTML(urllib2.urlopen(URL).read())
+quotes = x.xpath('//p[@class="quote"]')
+
+quote = random.choice(quotes)
+id = quote.xpath('a/b')[0].text
+assert id.startswith('#')
+id = int(id[1:])
+score = int(re.findall(r'\((\d+)\)', etree.tostring(quote,encoding=unicode))[0])
+
+body = quote.xpath('following-sibling::p[@class="qt"][1]')[0]
+text = '\n'.join([line.strip() for line in body.itertext()])
+
+
+zephyr.init()
+z = zephyr.ZNotice()
+
+z.cls = CLS
+z.instance = INSTANCE
+z.opcode = 'auto'
+z.fields = ["http://bash.org/?%d (%d)" % (id, score),
+            text.encode('utf-8')]
+z.auth = False
+z.sender = 'bash'
+z.send()
