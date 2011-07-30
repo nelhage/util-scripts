@@ -1,0 +1,35 @@
+import urllib2
+import simplejson
+import yaml
+import zephyr
+import traceback
+
+# URL = 'https://mtgox.com/code/data/ticker.php'
+
+tickers = [('tradehill', 'https://api.tradehill.com/APIv1/USD/Ticker'),
+           ('mtgox', 'https://mtgox.com/code/data/ticker.php')]
+
+zephyr.init()
+for (instance, URL) in tickers:
+    try:
+        data = simplejson.loads(urllib2.urlopen(URL).read())
+        ticker = dict((k,float(v)) for (k,v) in data['ticker'].items()
+                      if k != 'last_when')
+
+        display = """\
+last: %(last).2f / buy: %(buy).2f / sell: %(sell).2f
+low: %(low).2f / high: %(high).2f
+volume: %(vol)s""" % ticker
+
+        z = zephyr.ZNotice()
+
+        z.cls = 'bitcoin'
+        z.instance = instance
+        z.opcode = 'auto'
+        z.fields = ['Bitcoin Market Zephyr gateway',
+                    display]
+        z.auth = False
+        z.sender = 'bitcoin'
+        z.send()
+    except:
+        traceback.print_exc()
