@@ -1,0 +1,2 @@
+#!/bin/sh
+xdotool search --name "Music Beta" key space
