@@ -1,2 +1,6 @@
 #!/bin/sh
-xdotool search --name "Music Beta" key space
+if type mpc >/dev/null 2>&1; then
+    mpc toggle
+else
+    xdotool search --name "Music Beta" key space
+fi
