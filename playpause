@@ -2,5 +2,5 @@
 if type mpc >/dev/null 2>&1; then
     mpc toggle
 else
-    xdotool search --name "Music Beta" key space
+    xdotool search --name "Google Music" key space
 fi
