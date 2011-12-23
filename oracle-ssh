@@ -1,0 +1,2 @@
+#!/bin/sh
+exec ssh -o proxycommand='nc -X connect -x www-proxy:80 %h %p' "$@"
