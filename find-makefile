@@ -44,6 +44,11 @@ my $langs = [
         name    => "scons",
         files   => [qw(SConstruct)],
         command => [qw(scons -Q)]
+    },
+    {
+        name    => "waf",
+        files   => [qw(wscript)],
+        command => [qw(node-waf)]
     }
 ];
 
