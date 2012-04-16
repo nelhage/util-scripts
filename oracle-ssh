@@ -1,2 +1,2 @@
 #!/bin/sh
-exec ssh -o proxycommand='nc -X connect -x www-proxy:80 %h %p' "$@"
+exec ssh -o proxycommand='nc -X connect -x www-proxy:80 %h %p' -o serveraliveinterval=60 "$@"
