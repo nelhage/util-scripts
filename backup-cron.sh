@@ -1,5 +1,6 @@
 #!/bin/sh
 (
+    PATH=$PATH:/usr/sbin:/sbin
     if ! flock -nx 9; then
         echo "Backup script is already running; aborting."
         exit 1;
