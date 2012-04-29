@@ -1,0 +1,2 @@
+#!/bin/sh
+rsync -Pax "$@" nelhage.com:/data/music/. ~/music/.
