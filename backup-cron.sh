@@ -28,5 +28,7 @@
     ARGS="-t 200"
 #    fi
 
+    export SSH_AUTH_SOCK=$HOME/.ssh/auth
+
     /home/nelhage/bin/backup.sh $ARGS
 ) 9>/home/nelhage/.backup/lock
