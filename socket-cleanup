@@ -1,0 +1,9 @@
+#!/usr/bin/python
+import os
+from gi.repository import GLib, NMClient
+def active_connections_changed(*args):
+    for sock in os.listdir(os.path.expanduser('~/.ssh/sockets')):
+        os.unlink(os.path.join(os.path.expanduser('~/.ssh/sockets'), sock))
+c = NMClient.Client.new()
+c.connect('notify::active-connections', active_connections_changed)
+GLib.MainLoop().run()

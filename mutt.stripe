@@ -1,0 +1,2 @@
+#!/bin/sh
+exec mutt -F $HOME/.muttrc.stripe
