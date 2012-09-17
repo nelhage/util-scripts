@@ -49,6 +49,11 @@ my $langs = [
         name    => "waf",
         files   => [qw(wscript)],
         command => [qw(node-waf)]
+    },
+    {
+        name    => "rake",
+        files   => [qw(Rakefile)],
+        command => [qw(rake)]
     }
 ];
 
