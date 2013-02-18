@@ -1,2 +1,2 @@
 #!/bin/sh
-rsync -Pax "$@" ~/music/. nelhage.com:/data/music/.
+rsync -Pax --exclude="/.include" "$@" ~/music/. nelhage.com:/data/music/.

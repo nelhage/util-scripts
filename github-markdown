@@ -1,0 +1,5 @@
+#!/bin/bash
+
+file="$1"
+
+curl https://api.github.com/markdown/raw -H 'Content-Type: text/plain' --data-binary "@$file"
