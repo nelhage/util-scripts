@@ -59,6 +59,11 @@ my $langs = [
         name    => "distutils",
         files   => [qw(setup.py)],
         command => [qw(python setup.py build)]
+    },
+    {
+        name    => "maven",
+        files   => [qw(pom.xml)],
+        command => [qw(mvn)]
     }
 ];
 
