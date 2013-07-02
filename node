@@ -1,5 +1,5 @@
 #!/bin/sh
 node_base="/home/nelhage/sw/node"
-node_version=v0.8.12
+: ${NODE_VERSION:=v0.10.12}
 
-exec "$node_base/$node_version/bin/$(basename "$0")" "$@"
+exec "$node_base/$NODE_VERSION/bin/$(basename "$0")" "$@"
