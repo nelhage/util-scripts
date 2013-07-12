@@ -2,7 +2,7 @@
 PDFVIEW=evince
 DIR="$1"
 if [ -z "$DIR" ]; then
-    DIR=/home/nelhage/doc
+    DIR=/home/nelhage/Dropbox/doc
 fi
 cd "$DIR"
 pdf=$(find . '(' -name '*.pdf' -o -name '*.ps' ')' | cut -f2- -d/ | dmenu) && $PDFVIEW "$pdf"
