@@ -1,0 +1,5 @@
+#!/bin/sh
+
+if health=$(curl -s http://stripe.com/healthcheck/haproxy); then
+    echo "${health%is at your service.}"
+fi
