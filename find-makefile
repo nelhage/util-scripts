@@ -64,6 +64,11 @@ my $langs = [
         name    => "maven",
         files   => [qw(pom.xml)],
         command => [qw(mvn)]
+    },
+    {
+        name    => "sbt",
+        files   => [qw(build.sbt)],
+        command => [qw(sbt compile)]
     }
 ];
 
