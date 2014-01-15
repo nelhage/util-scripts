@@ -1,0 +1,5 @@
+#!/bin/sh
+command=${1-status}
+
+services='postgresql mongodb redis-server elasticsearch rabbitmq-server'
+for s in $services; do sudo service "$s" "$command"; done
