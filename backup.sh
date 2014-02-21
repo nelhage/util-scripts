@@ -1,6 +1,6 @@
 #!/bin/sh
 SOURCE=$HOME/
-DEST=nelhage@nelhage.tribbl.es:/data/backup/$(hostname)/home/nelhage
+DEST=nelhage@nelhage.com:/data/backup/$(hostname)/home/nelhage
 : ${SSH_AUTH_SOCK:=/tmp/ssh.nelhage/auth}
 export SSH_AUTH_SOCK
 
