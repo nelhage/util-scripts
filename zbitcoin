@@ -8,8 +8,7 @@ import sys
 
 # URL = 'https://mtgox.com/code/data/ticker.php'
 
-tickers = [('mtgox', 'https://mtgox.com/code/data/ticker.php'),
-           ('bitstamp', 'https://www.bitstamp.net/api/ticker/')]
+tickers = [('bitstamp', 'https://www.bitstamp.net/api/ticker/')]
 
 dryrun = (len(sys.argv) > 1 and sys.argv[1] in ['-n', '--dryrun'])
 
@@ -17,21 +16,12 @@ zephyr.init()
 for (instance, URL) in tickers:
     try:
         data = simplejson.loads(urllib2.urlopen(URL).read())
-        if 'ticker' in data:
-            data = data['ticker']
-        ticker = dict((k,float(v)) for (k,v) in data.items()
-                      if k not in ['last_when', 'timestamp'])
-        if 'bid' in ticker:
-            ticker['buy'] = ticker['bid']
-        if 'ask' in ticker:
-            ticker['sell'] = ticker['ask']
-        if 'volume' in ticker:
-            ticker['vol'] = ticker['volume']
+        ticker = dict((k,float(v)) for (k,v) in data.items())
 
         display = """\
-last: %(last).2f / buy: %(buy).2f / sell: %(sell).2f
+last: %(last).2f / bid: %(bid).2f / ask: %(ask).2f
 low: %(low).2f / high: %(high).2f
-volume: %(vol)s""" % ticker
+volume: %(volume)s""" % ticker
 
         if dryrun:
             print "[%s]\n%s" % (instance, display)
