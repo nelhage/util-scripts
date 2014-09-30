@@ -1,0 +1,4 @@
+#!/bin/sh
+for i in $(seq 1 60); do
+    dig +short "$@"
+done | perl -ne '$H{$_}++ or print'
