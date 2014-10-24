@@ -1,7 +1,12 @@
 #!/bin/sh
 go_base="/home/nelhage/sw/go"
 
-: ${GO_VERSION:=$(readlink "$go_base/default")}
-export GOROOT="$go_base/$GO_VERSION"
+if [ -d "$go_base" ]; then
+    : ${GO_VERSION:=$(readlink "$go_base/default")}
+    export GOROOT="$go_base/$GO_VERSION"
+fi
+if ! [ "$GOROOT" ]; then
+    export GOROOT=/usr/local/go/
+fi
 
-exec "$go_base/$GO_VERSION/bin/$(basename "$0")" "$@"
+exec "$GOROOT/bin/$(basename "$0")" "$@"
