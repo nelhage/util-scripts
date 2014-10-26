@@ -1,6 +1,6 @@
 #!/bin/sh
 if [ "$(uname)" = Darwin ]; then
-    exec pbcopy
+    exec reattach-to-user-namespace pbcopy
 else
     exec xclip -i -selection clipboard
 fi
