@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+# Unbundle, so we can rebundle somewhere else. This is the worst.
+
+ENV.delete('RUBYOPT')
+ENV['PATH'] = ENV['PATH'].
+  split(':').
+  reject do |p|
+    next true if p =~ %r{/vendor/bundle/}
+    next false unless ENV['RBENV_ROOT']
+    root = ENV['RBENV_ROOT']
+    p =~ %r{^#{root}} && p !~ %r{^#{File.join(root, "shims")}}
+  end.
+  join(':')
+ENV.delete_if do |key, _|
+  key.start_with?('BUNDLE_') || key.start_with?('GEM_') || key.start_with?('RBENV_')
+end
+
+if ARGV.empty?
+  STDERR.puts "usage: unbundle COMMAND..."
+  exit 2
+end
+
+# Continue on your merry...
+exec([ARGV[0], ARGV[0]], *ARGV[1..-1])
