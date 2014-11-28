@@ -1,6 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 SOURCE=$HOME/
-DEST=nelhage@nelhage.com:/data/backup/$(hostname)/home/nelhage
+host=$(hostname)
+host=${host%.*}
+DEST=nelhage@nelhage.com:/data/backup/${host}/home/nelhage
 : ${SSH_AUTH_SOCK:=/tmp/ssh.nelhage/auth}
 export SSH_AUTH_SOCK
 
@@ -41,4 +43,4 @@ rsync -ax $EXTRAOPTS --rsh=ssh --delete --delete-excluded \
       --exclude-from=$HOME/.backup/excludes \
       "$SOURCE" "$DEST"
 
-(echo -n "$? "; date ) >> ~/.backup/backups
+echo "$? $(date)" >> ~/.backup/backups
