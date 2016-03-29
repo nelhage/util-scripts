@@ -1,0 +1,13 @@
+#!/usr/bin/env python
+import boto3.session
+import sys
+import os
+
+s = boto3.session.Session()
+creds = s._session.get_credentials()
+os.environ['AWS_ACCESS_KEY_ID'] = creds.access_key
+os.environ['AWS_SECRET_ACCESS_KEY'] = creds.secret_key
+if creds.token:
+    os.environ['AWS_SESSION_TOKEN'] = creds.token
+os.environ['AWS_DEFAULT_REGION'] = s._session.get_config_variable('region')
+os.execvp(sys.argv[1], sys.argv[1:])
