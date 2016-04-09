@@ -1,6 +1,0 @@
-#!/bin/sh
-if type mpc >/dev/null 2>&1; then
-    mpc toggle
-else
-    xdotool search --name "Google Music" key space
-fi

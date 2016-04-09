@@ -1,7 +1,0 @@
-#!/bin/bash
-opts=()
-if [ -f ~/music/.include ]; then
-    opts+=("--include-from=$HOME/music/.include" "--exclude=/*")
-fi
-
-rsync -Pax "${opts[@]}" "$@" nelhage.com:/data/music/. ~/music/.
