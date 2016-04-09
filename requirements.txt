@@ -1,5 +1,4 @@
 PyYAML
 Cython
-PyZephyr
 lxml
-
+boto3
