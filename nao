@@ -1,0 +1,4 @@
+#!/bin/bash
+set -eu
+DGLAUTH="nelhage:$(pw get nethack.alt.org)"; export DGLAUTH
+exec ssh -o SendEnv=DGLAUTH nethack@alt.org
