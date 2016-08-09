@@ -1,0 +1,17 @@
+#!/usr/bin/env python
+from __future__ import print_function
+import requests
+import json
+import re
+
+def main():
+  resp = requests.get('http://projects.fivethirtyeight.com/2016-election-forecast/')
+  dat = json.loads(re.search(r'race\.stateData\s*=\s*([^;]+);', resp.text).group(1))
+  latest = dat['forecasts']['latest']
+  for model in ['now', 'polls', 'plus']:
+    trump = round(latest['R']['models'][model]['winprob'], 1)
+    hillary = round(latest['D']['models'][model]['winprob'], 1)
+    print("{0}: hillary: {1}% - {2}%".format(model, hillary, trump))
+
+if __name__ == '__main__':
+  main()
