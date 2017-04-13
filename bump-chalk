@@ -1,0 +1,40 @@
+#!/bin/bash
+set -eu
+gem=$(basename "$(pwd)")
+version="$1"
+
+git checkout master
+
+env newver=$version \
+    perl -i'' -lape 's{VERSION\s*=\s*(['"'"'"])\K([0-9.]+)\1}{$ENV{newver}$1}' \
+    "lib/$gem/version.rb"
+
+git commit "lib/$gem/version.rb" -m "Version $version"
+
+git --no-pager show HEAD
+
+perl -e 'print "OK (y/N)? "'
+read repl
+case "$repl" in
+    y|Y)
+        ;;
+    *)
+        echo "Aborting..." >&2
+        exit 1
+        ;;
+esac
+
+git tag -m "Release $version" "v$version" HEAD
+
+echo "Building..."
+gem build "$gem.gemspec"
+
+echo "Pushing..."
+git push origin master "v$version"
+
+echo "Publishing..."
+mv "$gem-$version.gem" ~/stripe/gems/public/gems/
+cd ~/stripe/gems/
+
+git add "public/gems/$gem-$version.gem"
+git commit -m "$gem-$version"
