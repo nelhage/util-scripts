@@ -1,13 +1,15 @@
 #!/bin/bash
 
-eval "$(git for-each-ref refs/heads/ --merged master --shell --format='
+heads=$(git worktree list --porcelain | awk '/branch/ {print $2}')
+
+eval "$(git for-each-ref refs/heads/ --merged origin/master --shell --format='
 set -eu
 ref=%(refname)
 sha=%(objectname)
 shortref=%(refname:short)
 shortsha=%(objectname:short)
-if [ "$ref" != "refs/heads/master" ]; then
-  git update-ref -d "$ref" "$sha"
-  echo "Deleted $shortref ($shortsha)"
+if ! echo "$heads" | grep -Fq "$ref"; then
+    git update-ref -d "$ref" "$sha"
+    echo "Deleted $shortref ($shortsha)"
 fi
 ')"
