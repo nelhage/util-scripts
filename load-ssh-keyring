@@ -1,0 +1,40 @@
+#!/usr/bin/python
+
+import os
+import subprocess
+import sys
+
+import gnomekeyring
+
+def main():
+    keyring = gnomekeyring.get_default_keyring_sync()
+    for id in gnomekeyring.list_item_ids_sync(keyring):
+        attrs = gnomekeyring.item_get_attributes_sync(keyring, id)
+        if 'unique' not in attrs or not attrs['unique'].startswith('ssh-store:'):
+            continue
+
+        path = attrs['unique'][len('ssh-store:'):]
+
+        if not os.path.exists(path):
+            continue
+
+        with open('/dev/null') as f:
+            env = os.environ.copy()
+            env['SSH_ASKPASS'] = sys.argv[0]
+            env['LOAD_PASSWORD_ID'] = str(id)
+            subprocess.check_call(
+                ['ssh-add', path],
+                env=env,
+                stdin=f,
+            )
+
+def showpass():
+    id = int(os.environ['LOAD_PASSWORD_ID'])
+    keyring = gnomekeyring.get_default_keyring_sync()
+    info = gnomekeyring.item_get_info_sync(keyring, id)
+    print info.get_secret()
+
+if 'LOAD_PASSWORD_ID' in os.environ:
+    showpass()
+else:
+    main()
