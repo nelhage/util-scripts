@@ -69,6 +69,11 @@ my $langs = [
         name    => "sbt",
         files   => [qw(build.sbt)],
         command => [qw(sbt compile)]
+    },
+    {
+        name    => "cargo",
+        files   => [qw(Cargo.toml)],
+        command => [qw(cargo)],
     }
 ];
 
