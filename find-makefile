@@ -111,6 +111,7 @@ while($dir  && has_makefile($dir)) {
 }
 
 chdir($prev_dir);
+print("Entering directory `$prev_dir'\n");
 
 my @command = (@{$lang->{command}}, @ARGV);
 
