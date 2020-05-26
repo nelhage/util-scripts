@@ -1,0 +1,36 @@
+#!/usr/bin/env python3
+from __future__ import print_function
+import sys
+import subprocess
+import time
+import os
+import fcntl
+
+DEBOUNCE_INTERVAL = 0.25
+
+def main(argv):
+    if len(argv) < 2:
+        print("Usage: {} KEY COMMAND...".format(sys.argv[0]), file=sys.stderr)
+        sys.exit(1)
+    key = argv[0]
+    cmd = argv[1:]
+    state_dir="/run/user/{}/debounce".format(os.getuid())
+    os.makedirs(state_dir, exist_ok=True)
+    now = time.time()
+    state_file = os.path.join(state_dir, key)
+    with open(state_file, 'a+t') as fh:
+        fcntl.flock(fh, fcntl.LOCK_EX)
+        fh.seek(0)
+        try:
+            prev=float(fh.read().rstrip())
+        except ValueError:
+            prev=0
+        print("debounce prev={} t={} executing={}".format(prev, now-prev, (now - prev) >= DEBOUNCE_INTERVAL))
+        if (now - prev) < DEBOUNCE_INTERVAL:
+            return
+        subprocess.check_call(cmd)
+        fh.truncate(0)
+        print("{}\n".format(now), file=fh)
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
