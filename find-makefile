@@ -74,6 +74,11 @@ my $langs = [
         name    => "cargo",
         files   => [qw(Cargo.toml)],
         command => [qw(cargo)],
+    },
+    {
+        name    => "bazel",
+        files   => [qw(WORKSPACE)],
+        command => [qw(bazel)],
     }
 ];
 
