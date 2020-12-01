@@ -79,6 +79,11 @@ my $langs = [
         name    => "bazel",
         files   => [qw(WORKSPACE)],
         command => [qw(bazel)],
+    },
+    {
+        name    => "go",
+        files   => [qw(go.mod)],
+        command => [qw(go)],
     }
 ];
 
