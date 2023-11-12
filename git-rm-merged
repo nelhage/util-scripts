@@ -1,13 +1,17 @@
 #!/bin/bash
+set -eu
 
-main=origin/main
-if ! git rev-parse -q --verify "$main"; then
-    main=origin/master
+if ! main=$(git rev-parse --abbrev-ref refs/remotes/origin/HEAD 2>/dev/null); then
+    main=origin/main
+    if ! git rev-parse -q --verify "$main"; then
+        main=origin/master
+    fi
 fi
 
 heads=$(git worktree list --porcelain | awk '/branch/ {print $2}')
 
-eval "$(git for-each-ref refs/heads/ --merged $main --shell --format='
+
+eval "$(git for-each-ref refs/heads/ --merged "$main" --shell --format='
 set -eu
 ref=%(refname)
 sha=%(objectname)
