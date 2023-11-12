@@ -58,7 +58,7 @@ my $langs = [
     {
         name    => "distutils",
         files   => [qw(setup.py)],
-        command => [qw(python setup.py build)]
+        command => [qw(pip)]
     },
     {
         name    => "maven",
@@ -81,10 +81,20 @@ my $langs = [
         command => [qw(bazel)],
     },
     {
+        name    => "ninja",
+        files   => [qw(build.ninja)],
+        command => [qw(ninja)],
+    },
+    {
         name    => "go",
         files   => [qw(go.mod)],
         command => [qw(go)],
-    }
+    },
+    {
+        name    => "cmake",
+        files   => [qw(CMakeLists.txt)],
+        command => [qw(cmake)],
+    },
 ];
 
 my $dir = getcwd;
